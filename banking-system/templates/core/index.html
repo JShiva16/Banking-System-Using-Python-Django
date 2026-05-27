@@ -1,0 +1,78 @@
+{% extends 'core/base.html' %}
+
+{% block head_title %}Banking System{% endblock %}
+
+{% block content %}
+<div class="hero-section py-5">
+  <div class="row align-items-center gy-4">
+    <div class="col-lg-6">
+      <p class="eyebrow">Modern Banking</p>
+      <h1 class="display-5 fw-bold">A cleaner, smarter way to manage your money.</h1>
+      <p class="lead text-muted mb-4">Fast account setup, secure transactions, and streamlined reporting in a simple banking app experience.</p>
+      {% if request.user.is_authenticated %}
+      <div class="d-flex gap-2 flex-wrap">
+        <a href="{% url 'transactions:transaction_report' %}" class="btn btn-primary btn-lg">View Transactions</a>
+        <a href="{% url 'transactions:deposit_money' %}" class="btn btn-outline-secondary btn-lg">Deposit Funds</a>
+      </div>
+      {% else %}
+      <div class="d-flex gap-2 flex-wrap">
+        <a href="{% url 'accounts:user_registration' %}" class="btn btn-primary btn-lg">Create Account</a>
+        <a href="{% url 'accounts:user_login' %}" class="btn btn-outline-secondary btn-lg">Sign In</a>
+      </div>
+      {% endif %}
+    </div>
+    <div class="col-lg-5 offset-lg-1">
+      <div class="info-card p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+          <div>
+            <span class="badge bg-primary-soft text-primary">Secure Banking</span>
+          </div>
+          <div class="text-end">
+            <p class="text-muted mb-1">Balance</p>
+            {% if request.user.is_authenticated and request.user.account %}
+            <h3 class="mb-0">₹ {{ request.user.account.balance }}</h3>
+            {% else %}
+            <h3 class="mb-0">Start today</h3>
+            {% endif %}
+          </div>
+        </div>
+        {% if request.user.is_authenticated %}
+        <p class="text-muted mb-4">Welcome back, {{ request.user.first_name|default:request.user.email }}. Continue managing your account securely.</p>
+        {% else %}
+        <p class="text-muted mb-4">Track spending, transfer funds, and view transaction history with a modern banking dashboard.</p>
+        {% endif %}
+        <div class="d-flex gap-3">
+          <div class="feature-box">
+            <h6>Secure</h6>
+            <p class="text-muted mb-0">Keep your transactions private and safe.</p>
+          </div>
+          <div class="feature-box">
+            <h6>Fast</h6>
+            <p class="text-muted mb-0">Complete deposits and withdrawals quickly.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row gx-4 gy-4 mt-5">
+  <div class="col-md-4">
+    <div class="feature-card p-4 h-100">
+      <h5>Account Management</h5>
+      <p class="text-muted">Manage balances, account types, and basic profile details with one dashboard.</p>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="feature-card p-4 h-100">
+      <h5>Transaction Control</h5>
+      <p class="text-muted">Deposit, withdraw, and audit transactions with transparent history.</p>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="feature-card p-4 h-100">
+      <h5>Interest Automation</h5>
+      <p class="text-muted">Automated interest calculations keep your savings accurate.</p>
+    </div>
+  </div>
+</div>
+{% endblock %}
